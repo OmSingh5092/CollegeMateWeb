@@ -17,6 +17,8 @@ import {signInWithGoogle} from '../../api/googleSignin'
 //Closures
 import {UserData} from '../../closures/UserData'
 
+import {withRouter} from 'react-router-dom'
+
 const style = (theme)=>({
     root:{
         borderRadius: "100px 0px 0px 0px",
@@ -45,10 +47,12 @@ const customGoogleButton= (renderProps  )=>(
 class Body extends React.Component{
     constructor(props){
         super(props);
+
+        this.successHandler = this.successHandler.bind(this);
     }
 
     successHandler(response){
-        console.log(response);
+        var profile = response.profileObj
         signInWithGoogle(response).then((res)=>(res.json()))
         .then((data)=>{
             console.log("login successfull");
@@ -58,6 +62,9 @@ class Body extends React.Component{
                 console.log(data);
                 UserData.setIdToken(data.authToken);
                 console.log(UserData.getToken());
+                //setting email
+                UserData.setEmail(profile.email);
+                this.props.history.push('/register');
             }else{
                 console.log(data.msg);
             }
@@ -93,4 +100,4 @@ class Body extends React.Component{
     }
 }
 
-export default withStyles(style)(Body);
+export default withRouter(withStyles(style)(Body));

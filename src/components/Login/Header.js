@@ -11,6 +11,7 @@ const style = (theme)=>({
 
     },
     titleText:{
+        margin:theme.spacing(5),
         color:"#FFFFFF",
         fontFamily:"Raleway",   
         fontSize:72,

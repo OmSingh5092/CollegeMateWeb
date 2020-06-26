@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { ThemeProvider } from '@material-ui/core';
+import {withStyles} from '@material-ui/styles'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Theme from './res/Theme'
+import Main from './components/Main/Main'
+
+
+const style = (theme)=>({
+  main:{
+  }
+})
+
+class App extends React.Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    const {classes} = this.props;
+    return(
+      <div className={classes.main}>
+
+        <ThemeProvider theme={Theme}>
+          <Main/>
+        </ThemeProvider>
+
+      </div>
+      
+    )
+  }
 }
 
-export default App;
+export default withStyles(style)(App);

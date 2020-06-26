@@ -14,6 +14,9 @@ import {googleConfig} from '../../config';
 //Api calls
 import {signInWithGoogle} from '../../api/googleSignin'
 
+//Closures
+import {UserData} from '../../closures/UserData'
+
 const style = (theme)=>({
     root:{
         borderRadius: "100px 0px 0px 0px",
@@ -39,9 +42,6 @@ const customGoogleButton= (renderProps  )=>(
     
 )
 
-
-
-
 class Body extends React.Component{
     constructor(props){
         super(props);
@@ -52,8 +52,22 @@ class Body extends React.Component{
         signInWithGoogle(response).then((res)=>(res.json()))
         .then((data)=>{
             console.log("login successfull");
-            console.log(data);
+            //Saving data in 
+            //Getting Success.
+            if(data.success){
+                console.log(data);
+                UserData.setIdToken(data.authToken);
+                console.log(UserData.getToken());
+            }else{
+                console.log(data.msg);
+            }
+
+            
         })
+    }
+
+    componentDidMount(){
+        console.log("token",UserData.getToken());
     }
 
     failureHandler(error){

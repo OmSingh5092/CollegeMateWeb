@@ -7,7 +7,7 @@ import {Box,FormControl,InputLabel, OutlinedInput ,Button, TableBody, Typography
 import {updateProfile} from '../../api/profileCtrl'
 
 //Closures
-import {UserData} from '../../closures/UserData'
+import {UserData} from '../../closures/LocalData'
 
 const style = (theme)=>({
     root:{

@@ -1,6 +1,8 @@
 import React from 'react'
 import {withStyles} from '@material-ui/styles'
 
+import {withRouter} from 'react-router-dom'
+
 import {Box,Typography, Grid, Tabs, Tab, Button, Menu,MenuItem} from '@material-ui/core'
 
 //Component
@@ -19,7 +21,7 @@ const style = (theme)=>({
 
     },
     titleText:{
-        
+        marginLeft:theme.spacing(10),
         color:"#FFFFFF",  
         fontSize:72,
         fontFamily:"Raleway-Black",
@@ -40,8 +42,15 @@ const style = (theme)=>({
         [theme.breakpoints.up('lg')]:{
             display:"none"
         }
+    },
+    drawer:{
+        marginTop:"auto",
+        marginBottom:"auto"
     }
 })
+
+
+const paths = ['dashboard','timetable','reminder'];
 
 class Header extends React.Component{
 
@@ -55,6 +64,7 @@ class Header extends React.Component{
 
         this.handleMenuClick = this.handleMenuClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.changeMenuTab = this.changeMenuTab.bind(this);
     }
     
     handleMenuClick(event){
@@ -63,6 +73,12 @@ class Header extends React.Component{
 
     handleTabChange(event, newValue){
         this.setState({selectedTab: newValue});
+        this.props.history.push(paths[newValue]);
+    }
+
+    changeMenuTab(index){
+        this.setState({selectedTab: index});
+        this.props.history.push(paths[index]);
     }
 
     render(){
@@ -70,8 +86,8 @@ class Header extends React.Component{
         const {theme} = this.props;
         return(
             <div className={classes.root}>
-                <Box display="flex" flexDirection="row" alignContent="center">
-                    <Drawer/>
+                <Box display="flex" flexDirection="row">
+                    <Drawer className={classes.drawer}/>
                     <Typography className={classes.titleText}>
                         CollegeMate
                     </Typography>
@@ -92,12 +108,13 @@ class Header extends React.Component{
                             <Menu 
                                 open={Boolean(this.state.menuAnchor)}
                                 keepMounted
+                                onClick={this.handleMenuClick}
                                 anchorEl={this.state.menuAnchor}
                                 onClose={this.handleMenuClick}>
 
-                                <MenuItem>DashBoard</MenuItem>
-                                <MenuItem>TimeTable</MenuItem>
-                                <MenuItem>Reminder</MenuItem>
+                                <MenuItem onClick={()=>{this.changeMenuTab(0)}}>DashBoard</MenuItem>
+                                <MenuItem onClick={()=>{this.changeMenuTab(1)}}>TimeTable</MenuItem>
+                                <MenuItem onClick={()=>{this.changeMenuTab(2)}}>Reminder</MenuItem>
                                 
                             </Menu>
                         </Box>
@@ -111,4 +128,4 @@ class Header extends React.Component{
     }
 }
 
-export default withStyles(style)(Header);
+export default withRouter(withStyles(style)(Header));

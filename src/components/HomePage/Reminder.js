@@ -13,7 +13,7 @@ const style=(theme)=>({
     }
 })
 
-class Body extends React.Component{
+class Reminder extends React.Component{
 
     render(){
         const {classes} = this.props;
@@ -26,4 +26,4 @@ class Body extends React.Component{
     }
 }
 
-export default withStyles(style)(Body);
+export default withStyles(style)(Reminder);

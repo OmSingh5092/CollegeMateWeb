@@ -43,7 +43,7 @@ const style = (theme)=>({
     },
     listitem:{
         margin:theme.spacing(5),
-    }
+    },
 })
 
 
@@ -70,7 +70,7 @@ class LeftDrawer extends React.Component{
         return(
             <div>
                 <Button onClick={this.toggleDrawer}>
-                    <img src = {MenuIcon} style={{width:60, height:50, margin:10}}/>
+                    <img src = {MenuIcon} style={{width:60, height:50}}/>
                 </Button>
                 <Drawer anchor="left" open ={this.state.drawerOpen} onClose={this.toggleDrawer} classes={{paper:classes.drawer}}>
                     <List className={classes.drawer} className={classes.list}>

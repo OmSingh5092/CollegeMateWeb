@@ -15,7 +15,7 @@ import {googleConfig} from '../../config';
 import {signInWithGoogle} from '../../api/googleSignin'
 
 //Closures
-import {UserData} from '../../closures/UserData'
+import {UserData} from '../../closures/LocalData'
 
 import {withRouter} from 'react-router-dom'
 

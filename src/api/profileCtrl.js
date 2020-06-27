@@ -2,7 +2,7 @@
 import {profile} from './endpoints'
 
 //Getting token 
-import {UserData} from '../closures/UserData'
+import {UserData} from '../closures/LocalData'
 
 export const updateProfile = (data)=>{
     const requestOptions = {

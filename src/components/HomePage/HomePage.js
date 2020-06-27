@@ -1,13 +1,15 @@
 import React from 'react'
 
 import {withStyles} from '@material-ui/styles'
-import {withRouter} from 'react-router-dom'
+import {withRouter,Switch,Route,Router, HashRouter} from 'react-router-dom'
 
 //Components
 import Header from './Header'
-import Body from './Body'
+import Dashboard from './Dashboard'
+import Timetable from './Timetable'
+import Reminder from './Reminder'
 
-import {UserData} from '../../closures/UserData'
+import {UserData} from '../../closures/LocalData'
 
 const style = (theme)=>({
     root:{
@@ -36,9 +38,22 @@ class Homepage extends React.Component{
 
         return(
             <div className={classes.root}>
-                <Header/>
-                <br/>
-                <Body/>
+                
+                <Header/><br/>
+
+                <HashRouter basename="/homepage">    
+                    <Switch>
+                        <Route exact path="/" component={Dashboard}/>
+                        <Route path = "/dashboard" component={Dashboard}/>
+                        <Route path="/timetable" component={Timetable}/>
+                        <Route path="/reminder" component={Reminder}/>
+                    </Switch>
+
+                </HashRouter>
+                
+                
+                
+                
             </div>
         )
     }

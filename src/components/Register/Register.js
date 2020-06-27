@@ -8,7 +8,7 @@ import Header from './Header'
 import Body from './Body'
 
 //Importing Stored Data
-import {UserData} from '../../closures/UserData'
+import {UserData} from '../../closures/LocalData'
 
 const style = (theme)=>({
     root:{

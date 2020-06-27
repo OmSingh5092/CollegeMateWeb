@@ -1,10 +1,10 @@
 import { subject } from "../api/endpoints";
 
 export const Assignments = (function(){
-    var data = {};
+    var data = [];
 
     function getAssignments(){
-        return data;
+        return data
     }
     function setAssignments(newData){
         data = newData;
@@ -15,10 +15,10 @@ export const Assignments = (function(){
 
 export const Subjects = (function(){
 
-    var data = {};
+    var data = [];
 
     function getSubjects(){
-        return data;
+        return data
     }
     function setSubjects(newData){
         data = newData;

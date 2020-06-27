@@ -4,7 +4,7 @@ import {HashRouter,Switch, Route} from 'react-router-dom'
 
 //Componenst
 import Login from '../Login/Login'
-import HomePage from '../HomePage/HomePage'
+import Homepage from '../Homepage/Homepage'
 import Register from '../Register/Register';
 
 class Main extends React.Component{
@@ -18,8 +18,8 @@ class Main extends React.Component{
                 <HashRouter>
                     <Switch>
                         <Route exact path= "/" component={Login}/>
-                        <Route path="/app" component = {HomePage}/>
                         <Route path="/register" component = {Register}/>
+                        <Route path= "/homepage" component  = {Homepage}/>
                     </Switch>
                 </HashRouter>
             </div>

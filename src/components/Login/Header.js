@@ -12,16 +12,17 @@ const style = (theme)=>({
     },
     titleText:{
         margin:theme.spacing(5),
-        color:"#FFFFFF",
-        fontFamily:"Raleway",   
+        color:"#FFFFFF",  
         fontSize:72,
+        fontFamily:"Raleway-Black",
 
 
     },
     subtitleText:{
-        color:"#FFFFFF",
-        fontFamily:"Raleway",   
+        marginLeft:theme.spacing(5),
+        color:"#FFFFFF",  
         fontSize:64,
+        fontFamily:"Raleway-Medium"
 
     }
 })

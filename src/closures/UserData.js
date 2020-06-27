@@ -1,6 +1,7 @@
 
 export const UserData = function(){
     const data = {
+        userExists: false,
         idToken:"",
         email:"",
         userData:{},
@@ -9,6 +10,9 @@ export const UserData = function(){
     data.idToken = localStorage.getItem('token');
     data.userData = localStorage.getItem('userData');
     data.email = localStorage.getItem('email');
+    if(localStorage.getItem('userExists')){
+        data.userExists = true;
+    }
 
     function setUserData(newData){
         data.userData = newData;
@@ -17,6 +21,14 @@ export const UserData = function(){
     function setIdToken(newToken){
         data.idToken = newToken;
         localStorage.setItem('token', data.idToken)
+    }
+
+    function userExists(){
+        return data.userExists;
+    }
+    function userDoExists(){
+        localStorage.setItem('userExists',true);
+        data.userExists = true;
     }
 
     function setEmail(newEmail){
@@ -33,5 +45,6 @@ export const UserData = function(){
         return data;
     }
 
-    return ({setUserData,getUserData,setIdToken,getToken,getEmail,setEmail})
+    return ({setUserData,getUserData,setIdToken,getToken,getEmail,setEmail,
+        userExists, userDoExists})
 } ();

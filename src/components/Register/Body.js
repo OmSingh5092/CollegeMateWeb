@@ -1,7 +1,7 @@
 import React from 'react'
 import {withStyles} from '@material-ui/styles'
 
-import {Box,FormControl,InputLabel, OutlinedInput, Button, TableBody, Typography} from '@material-ui/core'
+import {Box,FormControl,InputLabel, OutlinedInput ,Button, TableBody, Typography, FormHelperText} from '@material-ui/core'
 
 //Api Handler
 import {updateProfile} from '../../api/profileCtrl'
@@ -95,10 +95,10 @@ class Body extends React.Component{
             <div className={classes.root}>
                 <Box display="flex" flexDirection="column" flexWrap="wrap">
 
-                    <form> 
-                        <FormControl fullWidth variant="outlined" className={classes.formControl}>
+                    <div>
+                        <FormControl fullWidth  className={classes.formControl} variant="outlined">
                             <InputLabel>Name</InputLabel>
-                            <OutlinedInput variant="outlined" name="name" onChange={this.handleChange}/>
+                            <OutlinedInput name="name" onChange={this.handleChange}/>
                         </FormControl>
                         <br/>
                         <FormControl fullWidth variant="outlined" className={classes.formControl}>
@@ -118,7 +118,7 @@ class Body extends React.Component{
                         
                         
                         
-                    </form>
+                    </div>
                     <Box display="flex" flexGrow={1} justifyContent="right">
 
                         <Box className={classes.submit} component={Button} onClick={this.handleSubmit}>

@@ -64,12 +64,12 @@ class Body extends React.Component{
                 console.log(UserData.getToken());
                 //setting email
                 UserData.setEmail(profile.email);
+                //Setting user
+                UserData.userDoExists();
                 this.props.history.push('/register');
             }else{
                 console.log(data.msg);
             }
-
-            
         })
     }
 
@@ -93,8 +93,6 @@ class Body extends React.Component{
                         clientId={googleConfig.clientId}
                         cookiePolicy={'single_host_origin'}/>
                 </Box>
-                
-                
             </div>
         )
     }

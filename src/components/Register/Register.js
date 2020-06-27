@@ -1,10 +1,14 @@
 import React from 'react'
 
 import {withStyles} from '@material-ui/styles'
+import {withRouter} from 'react-router-dom'
 
 //Components
 import Header from './Header'
 import Body from './Body'
+
+//Importing Stored Data
+import {UserData} from '../../closures/UserData'
 
 const style = (theme)=>({
     root:{
@@ -22,7 +26,10 @@ class Register extends React.Component{
     }
 
     componentDidMount(){
-
+        const {history} = this.props;
+        if(!UserData.userExists()){
+            history.push('/');
+        }
     }
 
     render(){
@@ -39,4 +46,4 @@ class Register extends React.Component{
     }
 }
 
-export default withStyles(style)(Register);
+export default withRouter(withStyles(style)(Register));

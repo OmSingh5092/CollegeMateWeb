@@ -9,6 +9,6 @@ export default createMuiTheme({
         }
     },
     typography:{
-        fontFamily:'Raleway'
+        fontFamily:'"Raleway-Black","Raleway-Medium"'
     }
 })  

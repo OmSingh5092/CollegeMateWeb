@@ -9,6 +9,8 @@ import {updateProfile} from '../../api/profileCtrl'
 //Closures
 import {UserData} from '../../closures/LocalData'
 
+import {withRouter} from 'react-router-dom'
+
 const style = (theme)=>({
     root:{
         display:"flex",
@@ -73,6 +75,9 @@ class Body extends React.Component{
             if(res.success){
                 UserData.setUserData(res.user);
                 console.log(UserData.getUserData());
+
+                this.props.history.push('/homepage');
+
             }else{
                 console.log(res.error);
             }
@@ -84,8 +89,6 @@ class Body extends React.Component{
     componentDidMount(){
         //Checking User availability
     }
-
-
 
     render(){
         const {classes} = this.props;
@@ -137,5 +140,5 @@ class Body extends React.Component{
 
 }
 
-export default withStyles(style, {withTheme:true})(Body);
+export default withRouter(withStyles(style, {withTheme:true})(Body));
 

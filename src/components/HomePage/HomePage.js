@@ -39,9 +39,8 @@ class Homepage extends React.Component{
         return(
             <div className={classes.root}>
                 
-                <Header/><br/>
-
                 <HashRouter basename="/homepage">    
+                    <Header/><br/>
                     <Switch>
                         <Route exact path="/" component={Dashboard}/>
                         <Route path = "/dashboard" component={Dashboard}/>

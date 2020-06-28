@@ -140,29 +140,34 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount(){
-        getSubjects().then((res)=>(res.json()))
-        .then((data)=>{
-            if(data.success){
-                Subjects.setSubjects(data.subjects);
-                this.setState({subjectLoading:false})
-            }else{
-                console.log(data.msg);
-            }
-        }).catch((err)=>{
-            console.log(err);
-        })
-
+        if(Subjects.getSubjects() == null){
+            getSubjects().then((res)=>(res.json()))
+            .then((data)=>{
+                if(data.success){
+                    Subjects.setSubjects(data.subjects);
+                    this.setState({subjectLoading:false})
+                }else{
+                    console.log(data.msg);
+                }
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+        
         console.log(Subjects.getSubjects());
 
-        getAssinments().then((res)=>(res.json()))
-        .then((data)=>{
-            if(data.success){
-                Assignments.setAssignments(data.assignments);
-                this.setState({assignmentLoading:false})
-            }
-        }).catch((err)=>{
-            console.log(err);
-        })
+        if(Assignments.getAssignments() == null){
+            getAssinments().then((res)=>(res.json()))
+            .then((data)=>{
+                if(data.success){
+                    Assignments.setAssignments(data.assignments);
+                    this.setState({assignmentLoading:false})
+                }
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+        
     }
 
     render(){
@@ -173,10 +178,10 @@ class Dashboard extends React.Component{
                 <Box display="flex" flexDirection="row" style={{margin:50}} flexWrap="wrap" flexGrow={1}>
                     <Box display="flex" flexDirection="column" flexGrow={1} style={{marginRight:30}}>
                         <Box>
-                            {assignmentLoading?<CircularProgress/>:<AssignmentComp/>}
+                            {assignmentLoading?<CircularProgress style={{margin:100}}/>:<AssignmentComp/>}
                         </Box>
                         <Box>
-                            {subjectLoading?<CircularProgress/>:<SubjectComp/>}
+                            {subjectLoading?<CircularProgress style={{margin:100}}/>:<SubjectComp/>}
                         </Box>
                     </Box>
                     <Box display="flex" flexDirection="row" flexWrap="wrap" flex={1} justifyContent="flex-end">

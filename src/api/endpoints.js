@@ -1,5 +1,5 @@
-const BASE_URL = "http://localhost:4193/api/";
-
+const BASE_URL = "https://collegemate-api.herokuapp.com/api/" ;
+//"http://localhost:4193/api/"
 export const login = {
     post:BASE_URL+"google/signin",
 }

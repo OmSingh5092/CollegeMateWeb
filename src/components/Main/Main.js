@@ -18,7 +18,7 @@ class Main extends React.Component{
                 <HashRouter>
                     <Switch>
                         <Route exact path= "/" component={Login}/>
-                        <Route path="/register" component = {Register}/>
+                        <Route path="/register/" component = {Register}/>
                         <Route path= "/homepage" component  = {Homepage}/>
                     </Switch>
                 </HashRouter>

@@ -2,6 +2,7 @@ import React from 'react'
 
 import {withStyles,makeStyles,useTheme} from '@material-ui/styles'
 import { Grid, Typography ,Box,CircularProgress,Button} from '@material-ui/core';
+import {Link} from 'react-router-dom'
 
 import {getSubjects} from '../../api/subjectCtrl'
 import {getAssinments} from '../../api/assignmentCtrl'
@@ -15,8 +16,8 @@ import { Subject } from '../../api/endpoints';
 
 //Icons
 
-import {BookIcon} from '../../res/images/ic_books.png'
-import {DocIcon} from '../../res/images/ic_doc.png'
+import BookIcon from '../../res/images/ic_books.png'
+import DocIcon from '../../res/images/ic_doc.png'
 
 
 const useStyles =  makeStyles({
@@ -24,28 +25,29 @@ const useStyles =  makeStyles({
         color:"#FFFFFF"
     },
     title:{
-        color:"#000000"
+        color:"#000000",
+        fontSize:30
     },
     box:{
         display:"flex",
         flexDirection:"column",
         justifyContent:"center",
         alignContent:"center",
-        margin:50,
+        marginRight:30,
         backgroundColor: "#000000",
         borderRadius:"20px 20px 0px 20px",
-        height:150,
+        height:100,
         width:200,
     },
     text:{
         marginLeft:"auto",
         marginRight:"auto",
-    }
+    },
 })
 
 const AssignmentComp = (props)=>{
     const classes = useStyles();
-    var data = Assignments.getAssignments();
+    var data = Assignments.getAssignments().slice(0,3);
     console.log(data);
     return(
         <div className={classes.root}>
@@ -65,7 +67,10 @@ const AssignmentComp = (props)=>{
                         </Typography>
                     </Box>
                 ))}
+            </Box>
 
+            <Box display="flex" flexGrow={1} justifyContent="flex-end" style={{marginTop:20}} component={Link}>
+                    View More.
             </Box>
             
             
@@ -76,14 +81,14 @@ const AssignmentComp = (props)=>{
 
 const SubjectComp = (props)=>{
     const classes = useStyles();
-    const data = Subjects.getSubjects();
+    const data = Subjects.getSubjects().slice(0,3);
     return(
         <div className={classes.root}>
             <Typography className={classes.title}>
                 Subjects
             </Typography>
             <br/>
-            <Box display="flex" flexDirection="row">
+            <Box display="flex" flexDirection="row" flexWrap="wrap">
                 {data.map((data,index)=>(
                     <Box className={classes.box}>
                         <Typography className={classes.text}>
@@ -96,26 +101,31 @@ const SubjectComp = (props)=>{
                         
                     </Box>
                 ))}
-
             </Box>
+            <Box display="flex" justifyContent="flex-end" component={Link} style={{marginLeft:"auto"}}>
+                    View More.
+                </Box>
+            
             
             
         </div>
     )
 }
 
-
-
-
-
-
 const style=(theme)=>({
     root:{
         borderRadius: "100px 0px 0px 0px",
         background:theme.palette.primary.light,
         display:"flex",
-        justifyContent:"center",
-        alignContent:"center",
+        flexGrow:1,
+        flexWrap:"wrap",
+    },
+    sideButtons:{
+        borderRadius:"30px 30px 0px 30px",
+        backgroundColor:"#FFFFFF",
+        padding:40,
+        height:200,
+        width:350
     },
 })
 
@@ -160,33 +170,37 @@ class Dashboard extends React.Component{
         const {assignmentLoading,subjectLoading} = this.state;
         return(
             <div className={classes.root}>
-                <Grid container style={{marginLeft:50, marginTop:50}}>
-                    <Grid item ls={9} xs ={9}>
-                        <Grid item xs={12}>
+                <Box display="flex" flexDirection="row" style={{margin:50}} flexWrap="wrap" flexGrow={1}>
+                    <Box display="flex" flexDirection="column" flexGrow={1} style={{marginRight:30}}>
+                        <Box>
                             {assignmentLoading?<CircularProgress/>:<AssignmentComp/>}
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Box>
+                        <Box>
                             {subjectLoading?<CircularProgress/>:<SubjectComp/>}
-                        </Grid>
-                    </Grid>
-                    <Grid item ls={3} xs = {3}>
-                        <Grid item xs={12}>
+                        </Box>
+                    </Box>
+                    <Box display="flex" flexDirection="row" flexWrap="wrap" flex={1} justifyContent="flex-end">
+
+                        <Box style={{margin:20}} className={classes.sideButtons} component={Button}>
                             <img src={BookIcon} style={{height:"100px", width:"100px"}}/>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button>
-                                <img src={DocIcon} style={{height:100, width:100}}/>
-                            </Button>
-                            
-                        </Grid>
-                    </Grid>
-                </Grid>
+                            <br/>
+                            <Typography style={{marginLeft:30}}>
+                                Library
+                            </Typography>
+                        </Box>
+                        
+                        <Box style={{margin:20}} className={classes.sideButtons} component={Button}>
+                            <img src={DocIcon} style={{height:100, width:100}}/>
+                            <br/>
+                            <Typography style={{marginLeft:30}}>
+                                Attendance
+                            </Typography>
+                        </Box>
+                    </Box>
+                </Box>
             </div>
         )
     }
 }
 
 export default withStyles(style)(Dashboard);
-
-
-

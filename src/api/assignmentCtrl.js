@@ -11,5 +11,14 @@ export const getAssinments = ()=>{
     }
 
     return fetch(Assignment.get,requestOptions);
+}
 
+export const addAssignment = (data)=>{
+    const requestOptions = {
+        method:"POST",
+        headers:{"token": UserData.getToken(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    }
+
+    return fetch(Assignment.post,requestOptions);
 }

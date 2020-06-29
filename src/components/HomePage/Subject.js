@@ -55,7 +55,7 @@ const ViewHolder = (props)=>{
     )
 }
 
-const AddSbuject = (props)=>{
+const AddSubject = (props)=>{
     const style = {
         root:{
             display:"flex",
@@ -102,7 +102,7 @@ class Subject extends React.Component{
         super(props);
         this.state={
             popoveranchor:null,
-            subjects:[]
+            subjects:Subjects.getSubjects(),
         }
 
         this.handlePopOver= this.handlePopOver.bind(this);
@@ -131,24 +131,6 @@ class Subject extends React.Component{
         this.setState({popoveranchor:null});
     }
 
-    componentDidMount(){
-        if(Subjects.getSubjects().length ==0){
-            getSubjects().then((res)=>(res.json())
-            .then((res)=>{
-                if(res.success){
-                    Subjects.setSubjects(res.subjects);
-                    this.setState({subjects:Subjects.getSubjects()});
-                }else{
-
-                }
-            }));
-        }else{
-            this.setState({subjects:Subjects.getSubjects()});
-        }
-
-        
-    }
-
 
     render(){
         const {classes} = this.props;
@@ -167,7 +149,7 @@ class Subject extends React.Component{
                                 open={this.state.popoveranchor}
                                 anchorEl={this.state.popoveranchor}
                                 onClose={this.closePopOver}>
-                                <AddSbuject callback={this.addSubject}/>
+                                <AddSubject callback={this.addSubject}/>
                             </Popover>
                         </Button>
                     </Box>

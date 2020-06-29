@@ -21,3 +21,9 @@ export const Subject= {
     delete: BASE_URL+"subjects/delete",
 }
 
+export const Timetable={
+    post:BASE_URL+"timetable/add",
+    get:BASE_URL+"timetable/get",
+    delete:BASE_URL+"timetable/delete"
+}
+

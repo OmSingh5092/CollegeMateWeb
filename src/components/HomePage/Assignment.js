@@ -5,11 +5,14 @@ import {withStyles,useTheme} from '@material-ui/styles'
 import {Grid, Typography, Button,Box,Popover, TextField,FormControl,InputLabel,Select,MenuItem} from '@material-ui/core'
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
+//Api
+import {addAssignment,getAssinments} from '../../api/assignmentCtrl'
+
 //Icons
 import AddIcon from '../../res/images/ic_add.png'
 
 //Cloures
-import {Assignment,Subjects} from '../../closures/GeneralData'
+import {Assignments,Subjects} from '../../closures/GeneralData'
 
 const style = (theme)=>({
     root:{
@@ -38,9 +41,21 @@ const ViewHolder = (props)=>{
             minWidth:150
         }
     }
-    const {assigment} = props;
+    const {assignments} = props;
     return(
         <div style={style.root}>
+            <Typography>
+                {assignments.assignment_title}
+            </Typography>
+            <Typography>
+                {assignments.assignment_description}
+            </Typography>
+            <Typography>
+                {assignments.date_due}
+            </Typography>
+            <Typography>
+                {assignments.course_name} : {assignments.course_code}
+            </Typography>
         </div>
     )
 }
@@ -65,13 +80,10 @@ const AddAssignments = (props)=>{
 
     const {callback} = props;
 
-    const data = {
-        assignment_title:"",
-        assignment_description:"",
-        course_name:"",
-        course_code:"",
-        date_due:"",
-    }
+    const [title,setTitle] = React.useState('')
+    const [description,setDescription] = React.useState('')
+    const [date,setDate] = React.useState('')
+    const [subject,setSubject] = React.useState({})
 
     const [selectedSubject, setSelectedSubject] = React.useState("");
 
@@ -80,9 +92,10 @@ const AddAssignments = (props)=>{
             <Typography style={{padding:10}}>
                 Add Assignment
             </Typography>
-            <TextField variant="outlined" label="Title" onChange={(event)=>{data.assignment_title = event.target.value}}/><br/>
-            <TextField variant="outlined" label="Description" onChange={(event)=>{data.assignment_description = event.target.value}}/><br/>
-            <TextField variant="outlined" defaultValue="2000-01-01" label="Due Date" type="date" onChangeCapture={(event)=>{data.date_due=event.target.value}} InputLabelProps={{shrink: true,}}/>
+            <TextField variant="outlined" label="Title" onChange={(event)=>{setTitle(event.target.value)}}/><br/>
+            <TextField variant="outlined" label="Description" onChange={(event)=>{setDescription(event.target.value)}}/><br/>
+            <TextField variant="outlined" defaultValue="2000-01-01" label="Due Date" type="date" onChangeCapture={(event)=>{setDate(event.target.value)}} InputLabelProps={{shrink: true,}}/>
+            <br/>
             <FormControl variant="outlined" >
                 <InputLabel>Subject</InputLabel>
                 <Select label="Subject" value={selectedSubject} onChange= {(event)=>{
@@ -90,15 +103,22 @@ const AddAssignments = (props)=>{
                 >
                 {subjects.map((item,index)=>(
                     <MenuItem value={index} onClick={()=>{
-                        data.course_name = item.subject_title;
-                        data.course_code = item.course_code;
+                        setSubject(item)
                     }}>{item.subject_title} : {item.course_code}</MenuItem>
                 ))}
                 
                 </Select>
             </FormControl>
             
-            <Box style={style.submitButton} component={Button} onClick={()=>{callback(data)}}>
+            <Box style={style.submitButton} component={Button} onClick={()=>{callback(
+                {
+                    assignment_title: title,
+                    assignment_description: description,
+                    course_name: subject.subject_title,
+                    course_code:subject.course_code,
+                    date_due:date,
+                }
+            )}}>
                 <Typography>
                     Submit
                 </Typography>
@@ -115,16 +135,23 @@ class AssignmentComp extends React.Component{
 
         this.state={
             popoveranchor:null,
-            assignments:[],
+            assignments:Assignments.getAssignments(),
         }
 
         this.handlePopOver= this.handlePopOver.bind(this);
         this.closePopOver = this.closePopOver.bind(this);
-        this.addAssignmnet = this.addAssignmnet.bind(this);
+        this.addAssignment = this.addAssignment.bind(this);
     }
 
-    addAssignmnet(data){
+    addAssignment(data){
         console.log(data);
+        addAssignment(data).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                Assignments.addAssignment(res.assignment)
+                this.setState({assignments:Assignments.getAssignments()})
+            }
+        })
     }
 
     handlePopOver(event){
@@ -155,7 +182,7 @@ class AssignmentComp extends React.Component{
                                 open={this.state.popoveranchor}
                                 anchorEl={this.state.popoveranchor}
                                 onClose={this.closePopOver}>
-                                <AddAssignments callback={this.addAssignmnet}/>
+                                <AddAssignments callback={this.addAssignment}/>
                             </Popover>
                         </Button>
                     </Box>
@@ -163,7 +190,7 @@ class AssignmentComp extends React.Component{
                 <Box display="flex" flexWrap="wrap">
                     {this.state.assignments.map((item,index)=>(
                         <Box display="flex">
-                            <ViewHolder assigment={item}/>
+                            <ViewHolder assignments={item}/>
                         </Box>   
                     ))}
                 </Box>

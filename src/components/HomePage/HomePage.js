@@ -106,7 +106,10 @@ class Homepage extends React.Component{
                                 Progress:Timetable
                             }/>
                             <Route path="/reminder" component={Reminder}/>
-                            <Route path= "/assignment" component ={AssignmentComp} />
+                            <Route path= "/assignment" component ={
+                                (this.state.assignmentLoading)?
+                                    Progress:AssignmentComp
+                            } />
                             <Route path="/subject" component={
                                 (this.state.subjectLoading)? 
                                     Progress:SubjectComp

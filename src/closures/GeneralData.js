@@ -10,7 +10,11 @@ export const Assignments = (function(){
         data = newData;
     }
 
-    return ({getAssignments,setAssignments});
+    function addAssignment(assignment){
+        data.push(assignment);
+    }
+
+    return ({getAssignments,setAssignments,addAssignment});
 })();
 
 export const Subjects = (function(){
@@ -29,5 +33,24 @@ export const Subjects = (function(){
     }
 
     return({getSubjects,setSubjects,addSubject});
+
+})();
+
+export const Classes = (function(){
+
+    var data = [];
+
+    function getClasses(){
+        return data
+    }
+    function setClasses(newData){
+        data = newData;
+    }
+
+    function addClasses(timetable){
+        data.push(timetable);
+    }
+
+    return({getClasses,setClasses,addClasses});
 
 })();

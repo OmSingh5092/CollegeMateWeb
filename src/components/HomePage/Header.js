@@ -84,10 +84,11 @@ class Header extends React.Component{
     render(){
         const {classes} = this.props;
         const {theme} = this.props;
+        const {logout} = this.props;
         return(
             <div className={classes.root}>
                 <Box display="flex" flexDirection="row">
-                    <Drawer className={classes.drawer}/>
+                    <Drawer className={classes.drawer} logout={logout}/>
                     <Typography className={classes.titleText}>
                         CollegeMate
                     </Typography>

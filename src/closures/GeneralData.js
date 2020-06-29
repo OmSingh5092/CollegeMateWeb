@@ -1,5 +1,12 @@
 import { subject } from "../api/endpoints";
 
+const compareTime = (a,b)=>{
+    var date1 = new Date(a);
+    var date2 = new Date(b);
+
+    return date1.getTime()-date2.getTime();
+}
+
 export const Assignments = (function(){
     var data = [];
 
@@ -7,11 +14,17 @@ export const Assignments = (function(){
         return data
     }
     function setAssignments(newData){
+        newData.sort((a,b)=>{
+            return compareTime(a.date_due,b.date_due);
+        })
         data = newData;
     }
 
     function addAssignment(assignment){
         data.push(assignment);
+        data.sort((a,b)=>{
+            return compareTime(a.date_due,b.date_due);
+        })
     }
 
     return ({getAssignments,setAssignments,addAssignment});

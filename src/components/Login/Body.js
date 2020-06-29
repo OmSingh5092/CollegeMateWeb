@@ -17,6 +17,9 @@ import {signInWithGoogle} from '../../api/googleSignin'
 //Closures
 import {UserData} from '../../closures/LocalData'
 
+//Api Handler
+import {getProfile} from '../../api/profileCtrl'
+
 import {withRouter} from 'react-router-dom'
 
 const style = (theme)=>({
@@ -64,12 +67,20 @@ class Body extends React.Component{
                 console.log(UserData.getToken());
                 //setting email
                 UserData.setEmail(profile.email);
-                //Setting user
-                UserData.userDoExists();
                 if(data.newUser){
                     this.props.history.push('/register');
                 }else{
-                    this.props.history.push('/homepage');
+                    getProfile().then((res)=>(res.json()))
+                    .then((res)=>{
+                        if(res.success){
+                            UserData.setUserData(res.profile);
+                            this.props.history.push('/homepage');
+                        }else{
+                            console.log(res.msg);
+                        }
+                        
+                    })
+                    
                 }
                 
             }else{
@@ -78,9 +89,8 @@ class Body extends React.Component{
         })
     }
 
-    componentDidMount(){
-        console.log("token",UserData.getToken());
-    }
+    
+    
 
     failureHandler(error){
         console.log(error);

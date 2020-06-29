@@ -4,9 +4,9 @@ export const login = {
     post:BASE_URL+"google/signin",
 }
 
-export const profile = {
+export const Profile = {
     post: BASE_URL+"user/update",
-    get: ""
+    get: BASE_URL+"user/get"
 }
 
 export const Assignment={

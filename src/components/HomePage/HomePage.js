@@ -52,6 +52,8 @@ class Homepage extends React.Component{
             subjectLoading:true,
             assignmentLoading:true,
         }
+
+        this.logoutUser = this.logoutUser.bind(this);
     }
 
     componentDidMount(){
@@ -83,6 +85,13 @@ class Homepage extends React.Component{
         })
     }
 
+    logoutUser(){
+        UserData.deleteUser();
+        this.props.history.push('/');
+
+        //Signout with Google
+    }
+
     render(){
         const {classes} = this.props;
 
@@ -90,7 +99,7 @@ class Homepage extends React.Component{
             <div className={classes.root}>
                 
                 <HashRouter basename="/homepage">    
-                    <Header/><br/>
+                    <Header logout={this.logoutUser}/><br/>
                     <Box className={classes.body}>
                         <Switch>
                             <Route exact path="/" component={

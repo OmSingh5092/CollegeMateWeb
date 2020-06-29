@@ -4,6 +4,9 @@ import {withStyles} from '@material-ui/styles'
 import Header from './Header'
 import Body from './Body'
 
+//Localdata
+import {UserData} from '../../closures/LocalData'
+
 const style = (theme)=>({
     root:{
         display:"flex",
@@ -28,6 +31,15 @@ const style = (theme)=>({
 class Login extends React.Component{
     constructor(props){
         super(props);
+    }
+
+    componentDidMount(){
+        if(UserData.tokenExists() && !UserData.userExists()){
+            this.props.history.push('/register');
+        }
+        if(UserData.tokenExists() && UserData.userExists()){
+            this.props.history.push('/homepage');
+        }
     }
 
     render(){

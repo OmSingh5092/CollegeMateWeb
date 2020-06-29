@@ -12,7 +12,8 @@ import {Assignments,Subjects} from '../../closures/GeneralData'
 import {UserData} from '../../closures/LocalData'
 import { Subject } from '../../api/endpoints';
 
-//Assignment Component
+//Time Formatting
+import {dayAndTime} from '../../utils/timeFormatting'
 
 //Icons
 
@@ -63,7 +64,7 @@ const AssignmentComp = (props)=>{
                         </Typography>
                         <br/>
                         <Typography className={classes.text}>
-                            {data['date_due']}
+                            {dayAndTime(data['date_due'])}
                         </Typography>
                     </Box>
                 ))}

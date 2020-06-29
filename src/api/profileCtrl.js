@@ -1,5 +1,5 @@
 
-import {profile} from './endpoints'
+import {Profile} from './endpoints'
 
 //Getting token 
 import {UserData} from '../closures/LocalData'
@@ -11,6 +11,17 @@ export const updateProfile = (data)=>{
         body: JSON.stringify(data)
     }
 
-    return fetch(profile.post, requestOptions);
+    return fetch(Profile.post, requestOptions);
+
+}
+
+export const getProfile = ()=>{
+
+    const requestOptions = {
+        method:"GET",
+        headers:{ "token": UserData.getToken(),'Content-Type': 'application/json'},
+    }
+
+    return fetch(Profile.get, requestOptions);
 
 }

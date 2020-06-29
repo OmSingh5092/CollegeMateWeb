@@ -11,6 +11,9 @@ import {addAssignment,getAssinments} from '../../api/assignmentCtrl'
 //Icons
 import AddIcon from '../../res/images/ic_add.png'
 
+//DateFormatter
+import {parseDate} from '../../utils/timeFormatting'
+
 //Cloures
 import {Assignments,Subjects} from '../../closures/GeneralData'
 
@@ -39,21 +42,26 @@ const ViewHolder = (props)=>{
             display:"flex",
             flexDirection:"column",
             minWidth:150
+        },text:{
+            fontFamily:"Raleway-Medium",
+            margin:3,
+        },title:{
+            margin:5,
         }
     }
     const {assignments} = props;
     return(
         <div style={style.root}>
-            <Typography>
+            <Typography style={style.title}>
                 {assignments.assignment_title}
-            </Typography>
-            <Typography>
+            </Typography >
+            <Typography style={style.text}>
                 {assignments.assignment_description}
             </Typography>
-            <Typography>
-                {assignments.date_due}
-            </Typography>
-            <Typography>
+            <Typography style={style.text}>
+                {parseDate(assignments.date_due)}
+            </Typography >
+            <Typography style={style.text}>
                 {assignments.course_name} : {assignments.course_code}
             </Typography>
         </div>
@@ -94,7 +102,7 @@ const AddAssignments = (props)=>{
             </Typography>
             <TextField variant="outlined" label="Title" onChange={(event)=>{setTitle(event.target.value)}}/><br/>
             <TextField variant="outlined" label="Description" onChange={(event)=>{setDescription(event.target.value)}}/><br/>
-            <TextField variant="outlined" defaultValue="2000-01-01" label="Due Date" type="date" onChangeCapture={(event)=>{setDate(event.target.value)}} InputLabelProps={{shrink: true,}}/>
+            <TextField variant="outlined" label="Due Date" type="datetime-local" onChangeCapture={(event)=>{setDate(event.target.value)}} InputLabelProps={{shrink: true,}}/>
             <br/>
             <FormControl variant="outlined" >
                 <InputLabel>Subject</InputLabel>

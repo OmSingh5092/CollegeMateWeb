@@ -86,10 +86,6 @@ class Body extends React.Component{
         })
     }
 
-    componentDidMount(){
-        //Checking User availability
-    }
-
     render(){
         const {classes} = this.props;
         const {theme} = this.props;

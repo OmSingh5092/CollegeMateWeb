@@ -1,6 +1,8 @@
 import React from 'react'
 import {Button, Drawer,ListItem, List,ListItemIcon,ListItemText} from '@material-ui/core'
 
+import {withRouter} from 'react-router-dom'
+
 import {withStyles} from '@material-ui/styles'
 //Image Icons
 import MenuIcon from '../../res/images/ic_menu.png'
@@ -11,6 +13,14 @@ import ProfileIcon from '../../res/images/ic_profile.png'
 import PollsIcon from '../../res/images/ic_polls.png'
 import AboutUsIcon from '../../res/images/ic_about_us.png'
 import Logout from '../../res/images/ic_logout.png'
+
+//Closures
+
+import {UserData} from '../../closures/LocalData'
+import { GoogleLogout } from 'react-google-login'
+
+//Config
+import {googleConfig} from '../../config'
 
 
 const menuList = [
@@ -25,10 +35,6 @@ const menuList = [
     {
         title: "About Us",
         icon: AboutUsIcon
-    },
-    {
-        title: "Logout",
-        icon: Logout
     },
 ]
 
@@ -57,13 +63,21 @@ class LeftDrawer extends React.Component{
         }
 
         this.toggleDrawer = this.toggleDrawer.bind(this);
+        this.handleItemClick = this.handleItemClick.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
 
     toggleDrawer(){
         this.setState({drawerOpen: !this.state.drawerOpen});
     }
 
+    handleItemClick(item){
+    }
 
+    handleLogout(response){
+        const {logout} = this.props;
+        logout();
+    }
 
     render(){
         const {classes} = this.props;
@@ -75,12 +89,28 @@ class LeftDrawer extends React.Component{
                 <Drawer anchor="left" open ={this.state.drawerOpen} onClose={this.toggleDrawer} classes={{paper:classes.drawer}}>
                     <List className={classes.drawer} className={classes.list}>
                         {menuList.map((item,index)=>(
-                            <ListItem button className={classes.listitem}>
+                            <ListItem button className={classes.listitem} onClick={()=>{this.handleItemClick(index)}}>
                                 <ListItemIcon><img src={item.icon} style={{width:30, height:30}}/></ListItemIcon>
                                 <ListItemText> {item.title}</ListItemText>
                             </ListItem>
                             
                         ))}
+
+                        <GoogleLogout
+                            clientId={googleConfig.clientId}
+                            render={
+                                (renderProps)=>(
+
+                                <ListItem button className={classes.listitem} onClick={renderProps.onClick} disabled ={renderProps.disabled}>
+                                    <ListItemIcon><img src={Logout} style={{width:30, height:30}}/></ListItemIcon>
+                                    <ListItemText>Logout</ListItemText>
+                                </ListItem>
+                                )
+                            }
+                            onLogoutSuccess={this.handleLogout}
+                        >
+
+                        </GoogleLogout>
 
                     </List>
                    
@@ -91,4 +121,4 @@ class LeftDrawer extends React.Component{
     }
 }
 
-export default withStyles(style)(LeftDrawer);
+export default withRouter(withStyles(style)(LeftDrawer));

@@ -14,6 +14,9 @@ import AddIcon from '../../res/images/ic_add.png'
 //Apis
 import {addTimetable} from '../../api/subjectCtrl'
 
+//DateFormatter
+import {parseDate} from '../../utils/timeFormatting'
+
 const style = (theme)=>({
     root:{
         display:"flex",
@@ -128,7 +131,7 @@ class Timetable extends React.Component{
                                 open={this.state.popoveranchor}
                                 anchorEl={this.state.popoveranchor}
                                 onClose={this.closePopOver}>
-                                <AddTimetable callback={this.addSubject}/>
+                                <AddTimetable callback={this.addTimetable}/>
                             </Popover>
                         </Button>
                     </Box>

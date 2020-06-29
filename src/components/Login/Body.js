@@ -66,7 +66,12 @@ class Body extends React.Component{
                 UserData.setEmail(profile.email);
                 //Setting user
                 UserData.userDoExists();
-                this.props.history.push('/register');
+                if(data.newUser){
+                    this.props.history.push('/register');
+                }else{
+                    this.props.history.push('/homepage');
+                }
+                
             }else{
                 console.log(data.msg);
             }

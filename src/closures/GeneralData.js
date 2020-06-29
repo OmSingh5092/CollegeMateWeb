@@ -24,6 +24,10 @@ export const Subjects = (function(){
         data = newData;
     }
 
-    return({getSubjects,setSubjects});
+    function addSubject(subject){
+        data.push(subject);
+    }
+
+    return({getSubjects,setSubjects,addSubject});
 
 })();

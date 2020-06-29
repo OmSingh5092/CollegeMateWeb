@@ -69,7 +69,7 @@ const AssignmentComp = (props)=>{
                 ))}
             </Box>
 
-            <Box display="flex" flexGrow={1} justifyContent="flex-end" style={{marginTop:20}} component={Link}>
+            <Box display="flex" flexGrow={1} justifyContent="flex-end" style={{marginTop:20}} component={Link} to={"/assignment"}>
                     View More.
             </Box>
             
@@ -102,7 +102,7 @@ const SubjectComp = (props)=>{
                     </Box>
                 ))}
             </Box>
-            <Box display="flex" justifyContent="flex-end" component={Link} style={{marginLeft:"auto"}}>
+            <Box display="flex" justifyContent="flex-end" component={Link} style={{marginLeft:"auto"}} to={"/subject"}>
                     View More.
                 </Box>
             
@@ -114,11 +114,8 @@ const SubjectComp = (props)=>{
 
 const style=(theme)=>({
     root:{
-        borderRadius: "100px 0px 0px 0px",
-        background:theme.palette.primary.light,
         display:"flex",
         flexGrow:1,
-        flexWrap:"wrap",
     },
     sideButtons:{
         borderRadius:"30px 30px 0px 30px",
@@ -134,40 +131,8 @@ class Dashboard extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            assignmentLoading:true,
-            subjectLoading:true,
+            
         }
-    }
-
-    componentDidMount(){
-        if(Subjects.getSubjects() == null){
-            getSubjects().then((res)=>(res.json()))
-            .then((data)=>{
-                if(data.success){
-                    Subjects.setSubjects(data.subjects);
-                    this.setState({subjectLoading:false})
-                }else{
-                    console.log(data.msg);
-                }
-            }).catch((err)=>{
-                console.log(err);
-            })
-        }
-        
-        console.log(Subjects.getSubjects());
-
-        if(Assignments.getAssignments() == null){
-            getAssinments().then((res)=>(res.json()))
-            .then((data)=>{
-                if(data.success){
-                    Assignments.setAssignments(data.assignments);
-                    this.setState({assignmentLoading:false})
-                }
-            }).catch((err)=>{
-                console.log(err);
-            })
-        }
-        
     }
 
     render(){
@@ -175,13 +140,13 @@ class Dashboard extends React.Component{
         const {assignmentLoading,subjectLoading} = this.state;
         return(
             <div className={classes.root}>
-                <Box display="flex" flexDirection="row" style={{margin:50}} flexWrap="wrap" flexGrow={1}>
+                <Box display="flex" flexDirection="row"  flexWrap="wrap" flexGrow={1}>
                     <Box display="flex" flexDirection="column" flexGrow={1} style={{marginRight:30}}>
                         <Box>
-                            {assignmentLoading?<CircularProgress style={{margin:100}}/>:<AssignmentComp/>}
+                            <AssignmentComp/>
                         </Box>
                         <Box>
-                            {subjectLoading?<CircularProgress style={{margin:100}}/>:<SubjectComp/>}
+                            <SubjectComp/>
                         </Box>
                     </Box>
                     <Box display="flex" flexDirection="row" flexWrap="wrap" flex={1} justifyContent="flex-end">

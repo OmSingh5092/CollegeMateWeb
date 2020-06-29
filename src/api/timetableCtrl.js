@@ -19,9 +19,21 @@ export const addClass= (newClass)=>{
     const requestOptions={
         method:"POST",
         headers:{"token": UserData.getToken(), 'Content-Type': 'application/json' },
-        body:JSON.stringify(subject),
+        body:JSON.stringify(newClass),
     }
 
-    return fetch(Subject.post,requestOptions);
+    return fetch(Timetable.post,requestOptions);
     
+}
+
+export const deleteClass = (classId) =>{
+
+    const requestOptions={
+        method:"DELETE",
+        headers:{"token": UserData.getToken(), 'Content-Type': 'application/json' },
+        body:JSON.stringify({class_id:classId}),
+    }
+
+    return fetch(Timetable.delete,requestOptions);
+
 }

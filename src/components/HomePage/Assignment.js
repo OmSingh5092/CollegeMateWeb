@@ -2,14 +2,15 @@ import React from 'react'
 
 import {withStyles,useTheme} from '@material-ui/styles'
 
-import {Grid, Typography, Button,Box,Popover, TextField,FormControl,InputLabel,Select,MenuItem} from '@material-ui/core'
+import {Grid, Typography, Button,Box,Popover, TextField,FormControl,InputLabel,Select,MenuItem,DialogTitle,Dialog} from '@material-ui/core'
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 //Api
-import {addAssignment,getAssinments} from '../../api/assignmentCtrl'
+import {addAssignment,getAssinments,deleteAssignment} from '../../api/assignmentCtrl'
 
 //Icons
 import AddIcon from '../../res/images/ic_add.png'
+import CloseIcon from '../../res/images/ic_close.png'
 
 //DateFormatter
 import {parseDate} from '../../utils/timeFormatting'
@@ -49,9 +50,29 @@ const ViewHolder = (props)=>{
             margin:5,
         }
     }
+
+    const [dialog,setDialog] = React.useState(false);
+    
+    const {index} = props;
+    const {deleteCallback} = props;
     const {assignments} = props;
     return(
         <div style={style.root}>
+            <Box display="flex" flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
+                <img src={CloseIcon} style={{height:20, width:20}}/>
+            </Box>
+            <Dialog
+                open={dialog}
+                onClose={()=>setDialog(false)}
+            >
+                <DialogTitle >Are you sure to delete this subject?</DialogTitle>
+                <Button onClick={()=>{setDialog(false); deleteCallback(assignments['assignment_id'],index)}} color="primary">
+                    Agree
+                </Button>
+                <Button onClick={()=>setDialog(false)} color="primary" autoFocus>
+                    Disagree
+                </Button>
+            </Dialog>
             <Typography style={style.title}>
                 {assignments.assignment_title}
             </Typography >
@@ -149,6 +170,7 @@ class AssignmentComp extends React.Component{
         this.handlePopOver= this.handlePopOver.bind(this);
         this.closePopOver = this.closePopOver.bind(this);
         this.addAssignment = this.addAssignment.bind(this);
+        this.deleteAssignment = this.deleteAssignment.bind(this);
     }
 
     addAssignment(data){
@@ -158,6 +180,16 @@ class AssignmentComp extends React.Component{
             if(res.success){
                 Assignments.addAssignment(res.assignment)
                 this.setState({assignments:Assignments.getAssignments()})
+            }
+        })
+    }
+
+    deleteAssignment(assignmentId,index){
+        deleteAssignment(assignmentId).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                Assignments.removeAssignment(index);
+                this.setState({assignments:Assignments.getAssignments()});
             }
         })
     }
@@ -198,7 +230,7 @@ class AssignmentComp extends React.Component{
                 <Box display="flex" flexWrap="wrap">
                     {this.state.assignments.map((item,index)=>(
                         <Box display="flex">
-                            <ViewHolder assignments={item}/>
+                            <ViewHolder assignments={item} index={index} deleteCallback={this.deleteAssignment}/>
                         </Box>   
                     ))}
                 </Box>

@@ -26,3 +26,15 @@ export const addSubject = (subject)=>{
     return fetch(Subject.post,requestOptions);
     
 }
+
+export const deleteSubject = (subjectId)=>{
+
+    const requestOptions={
+        method:"DELETE",
+        headers:{"token": UserData.getToken(), 'Content-Type': 'application/json' },
+        body:JSON.stringify({subject_id:subjectId}),
+    }
+
+    return fetch(Subject.delete,requestOptions);
+
+}

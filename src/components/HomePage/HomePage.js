@@ -12,11 +12,12 @@ import Reminder from './Reminder'
 import AssignmentComp from './Assignment';
 import SubjectComp from './Subject'
 
-import {Assignments,Subjects} from '../../closures/GeneralData'
+import {Assignments,Subjects,Classes} from '../../closures/GeneralData'
 import {UserData} from '../../closures/LocalData'
 
 import {getSubjects} from '../../api/subjectCtrl'
 import {getAssinments} from '../../api/assignmentCtrl'
+import {getClasses} from '../../api/timetableCtrl'
 
 const style = (theme)=>({
     root:{
@@ -51,6 +52,7 @@ class Homepage extends React.Component{
         this.state = {
             subjectLoading:true,
             assignmentLoading:true,
+            timetableLoading:true,
         }
 
         this.logoutUser = this.logoutUser.bind(this);
@@ -83,6 +85,18 @@ class Homepage extends React.Component{
         }).catch((err)=>{
             console.log(err);
         })
+
+        getClasses().then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                Classes.setClasses(res.classes);
+                this.setState({timetableLoading:false})
+            }else{
+
+            }
+        })
+
+
     }
 
     logoutUser(){
@@ -111,7 +125,7 @@ class Homepage extends React.Component{
                                 Progress:Dashboard
                             }/>
                             <Route path="/timetable" component={
-                                (this.state.assignmentLoading || this.state.subjectLoading)? 
+                                (this.state.assignmentLoading || this.state.subjectLoadingn || this.state.timetableLoading)? 
                                 Progress:Timetable
                             }/>
                             <Route path="/reminder" component={Reminder}/>

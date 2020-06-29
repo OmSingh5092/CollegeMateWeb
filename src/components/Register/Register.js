@@ -27,7 +27,7 @@ class Register extends React.Component{
 
     componentDidMount(){
         const {history} = this.props;
-        if(!UserData.userExists()){
+        if(UserData.userExists()){
             history.push('/');
         }
     }

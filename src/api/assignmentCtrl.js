@@ -22,3 +22,13 @@ export const addAssignment = (data)=>{
 
     return fetch(Assignment.post,requestOptions);
 }
+
+export const deleteAssignment = (assignmentId)=>{
+    const requestOptions = {
+        method:"DELETE",
+        headers:{"token": UserData.getToken(), 'Content-Type': 'application/json' },
+        body: JSON.stringify({assignment_id:assignmentId})
+    }
+
+    return fetch(Assignment.delete,requestOptions);
+}

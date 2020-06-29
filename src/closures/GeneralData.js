@@ -10,24 +10,32 @@ const compareTime = (a,b)=>{
 export const Assignments = (function(){
     var data = [];
 
-    function getAssignments(){
-        return data
-    }
-    function setAssignments(newData){
-        newData.sort((a,b)=>{
-            return compareTime(a.date_due,b.date_due);
-        })
-        data = newData;
-    }
-
-    function addAssignment(assignment){
-        data.push(assignment);
+    function sortData(){
         data.sort((a,b)=>{
             return compareTime(a.date_due,b.date_due);
         })
     }
 
-    return ({getAssignments,setAssignments,addAssignment});
+    function getAssignments(){
+        return data
+    }
+    function setAssignments(newData){
+        data = newData;
+        sortData();
+    }
+
+    function removeAssignment(index){
+        data.splice(index,1);
+        sortData();
+        console.log(data);
+    }
+
+    function addAssignment(assignment){
+        data.push(assignment);
+        sortData();
+    }
+
+    return ({getAssignments,removeAssignment,setAssignments,addAssignment});
 })();
 
 export const Subjects = (function(){
@@ -44,26 +52,51 @@ export const Subjects = (function(){
     function addSubject(subject){
         data.push(subject);
     }
+    
+    function removeSubject(index){
+        data.splice(index,1);
+    }
 
-    return({getSubjects,setSubjects,addSubject});
+    return({getSubjects,removeSubject,setSubjects,addSubject});
 
 })();
 
 export const Classes = (function(){
 
-    var data = [];
+    var data = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]}
 
-    function getClasses(){
+    function sortData(key){
+        data[key].sort((a,b)=>{
+            compareTime(a.start,b.start);
+        })
+    }
+
+    function getClasses(day){
+        console.log(data[day]);
+        return data[day];
+    }
+    function getAllClasses(){
+        
         return data
     }
+
+    function removeClass(index,day){
+        data[day].splice(index,1);
+        sortData(day);
+    }
+
     function setClasses(newData){
-        data = newData;
+        newData.map((item,index)=>{
+            data[item.day].push(item);
+            sortData(item.day);
+        })
     }
 
     function addClasses(timetable){
-        data.push(timetable);
+        data[timetable.day].push(timetable);
+        sortData(timetable.day);
     }
 
-    return({getClasses,setClasses,addClasses});
+    return({getClasses,removeClass,setClasses,addClasses,getAllClasses});
 
 })();

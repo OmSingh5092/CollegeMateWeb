@@ -2,7 +2,7 @@ import React from 'react'
 
 import {withStyles,useTheme} from '@material-ui/styles'
 
-import {Grid, Typography, Button,Box,Popover, TextField} from '@material-ui/core'
+import {Grid, Typography, Button,Box,Popover, TextField,Dialog,DialogTitle} from '@material-ui/core'
 import { UserData } from '../../closures/LocalData';
 
 //Closures
@@ -10,9 +10,10 @@ import {Subjects} from '../../closures/GeneralData'
 
 //Icons
 import AddIcon from '../../res/images/ic_add.png'
+import CloseIcon from '../../res/images/ic_close.png'
 
 //Apis
-import {addSubject,getSubjects} from '../../api/subjectCtrl'
+import {addSubject,getSubjects,deleteSubject} from '../../api/subjectCtrl'
 
 const style = (theme)=>({
     root:{
@@ -29,6 +30,9 @@ const style = (theme)=>({
 
 const ViewHolder = (props)=>{
     const theme = useTheme();
+
+    const [dialog,setDialog] = React.useState(false);
+
     const style = {
         root:{
             backgroundColor:theme.palette.primary.main,
@@ -42,8 +46,25 @@ const ViewHolder = (props)=>{
         }
     }
     const {subject} = props;
+    const {index} = props;
+    const {deleteCallback} = props;
     return(
         <div style={style.root}>
+            <Box display="flex" flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
+                <img src={CloseIcon} style={{height:20, width:20}}/>
+            </Box>
+            <Dialog
+                open={dialog}
+                onClose={()=>setDialog(false)}
+            >
+                <DialogTitle >Are you sure to delete this subject?</DialogTitle>
+                <Button onClick={()=>{setDialog(false); deleteCallback(subject['subject_id'],index)}} color="primary">
+                    Agree
+                </Button>
+                <Button onClick={()=>setDialog(false)} color="primary" autoFocus>
+                    Disagree
+                </Button>
+            </Dialog>
             <Typography>
                 {subject['subject_title']}
             </Typography>
@@ -108,6 +129,7 @@ class Subject extends React.Component{
         this.handlePopOver= this.handlePopOver.bind(this);
         this.closePopOver = this.closePopOver.bind(this);
         this.addSubject = this.addSubject.bind(this);
+        this.deleteSubject = this.deleteSubject.bind(this);
     }
 
     addSubject(data){
@@ -120,6 +142,18 @@ class Subject extends React.Component{
             }else{
 
             }
+        })
+    }
+
+    deleteSubject(subjectId,index){
+        deleteSubject(subjectId).then((res)=>(res.json()))
+        .then((res)=>{
+            //Removing subject from local array
+            if(res.success){
+                Subjects.removeSubject(index);
+                this.setState({subjects:Subjects.getSubjects()})
+            }
+           
         })
     }
 
@@ -157,7 +191,7 @@ class Subject extends React.Component{
                 <Box display="flex" flexWrap="wrap">
                     {this.state.subjects.map((item,index)=>(
                         <Box display="flex">
-                            <ViewHolder subject={item}/>
+                            <ViewHolder subject={item} index={index} deleteCallback={this.deleteSubject}/>
                         </Box>   
                     ))}
                 </Box>

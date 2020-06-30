@@ -49,6 +49,7 @@ const ViewHolder = (props)=>{
             margin:3,
         },title:{
             margin:5,
+            fontSize:20
         }
     }
 
@@ -58,20 +59,20 @@ const ViewHolder = (props)=>{
     const {deleteCallback} = props;
     return(
         <div style={style.root}>
-            <Box display="flex" flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
+            {/*<Box display="flex" flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
                 <img src={CloseIcon} style={{height:20, width:20}}/>
-            </Box>
+            </Box> */}
 
             <Typography style={style.title}>
                 {reminder.summary}
             </Typography>
-            <Typography style={style.title}>
+            <Typography style={style.text}>
                 {reminder.description}
             </Typography>
-            <Typography style={style.title}>
+            <Typography style={style.text}>
                 Start : {parseDate(reminder.start.dateTime)}
             </Typography>
-            <Typography style={style.title}>
+            <Typography style={style.text}>
                 End : {parseDate(reminder.end.dateTime)}
             </Typography>
 
@@ -141,35 +142,39 @@ const AddReminder = (props)=>{
 
             <TextField variant="outlined" label="Summary" onChange={(event)=>{setSummary(event.target.value)}}/><br/>
             <TextField variant="outlined" label="Description" onChange={(event)=>{setDescription(event.target.value)}}/><br/>
-            <TextField variant="outlined" label="Start Time" type="datetime-local" onChangeCapture={(event)=>{setStart(event.target.value)}} InputLabelProps={{shrink: true,}}/>
+            <TextField variant="outlined" label="Start Time" type="datetime-local" inputProps={{max:end}} onChangeCapture={(event)=>{setStart(event.target.value)}} InputLabelProps={{shrink: true,}}/>
             <br/>
-            <TextField variant="outlined" label="End Time" type="datetime-local" onChangeCapture={(event)=>{setEnd(event.target.value)}} InputLabelProps={{shrink: true,}}/>
+            <TextField variant="outlined" label="End Time" type="datetime-local" inputProps={{min:start}} onChangeCapture={(event)=>{setEnd(event.target.value)}} InputLabelProps={{shrink: true,}}/>
             <br/>
             <Box>
                 <Typography> Notifications </Typography> 
                 <Switch checked={reminder} onChange={()=>setReminder(!reminder)}/>
             </Box>
             <Box style={style.submitButton} component={Button} onClick={()=>{
-                callback({
-                    summary:summary,
-                    description:description,
-                    start:{
-                        dateTime:new Date(start).toISOString(),
-                        'timeZone': 'America/Los_Angeles'
-                    },end:{
-                        dateTime:new Date(end).toISOString(),
-                        'timeZone': 'America/Los_Angeles'
-                    },
-                    reminders: reminder?{
-                        useDefault: true,
-                    }:{
-                        useDefault: false,
-                        'overrides': [
-                        {'method': 'email', 'minutes': 24 * 60},
-                        {'method': 'popup', 'minutes': 10},
-                        ],  
-                    }
-                })
+                try{
+                    callback({
+                        summary:summary,
+                        description:description,
+                        start:{
+                            dateTime:new Date(start).toISOString(),
+                            'timeZone': 'America/Los_Angeles'
+                        },end:{
+                            dateTime:new Date(end).toISOString(),
+                            'timeZone': 'America/Los_Angeles'
+                        },
+                        reminders: reminder?{
+                            useDefault: true,
+                        }:{
+                            useDefault: false,
+                            'overrides': [
+                            {'method': 'email', 'minutes': 24 * 60},
+                            {'method': 'popup', 'minutes': 10},
+                            ],  
+                        }
+                    })
+                }catch(err){
+                    
+                }
             }}>
                 <Typography>
                     Submit
@@ -203,9 +208,16 @@ class Reminder extends React.Component{
 
     addReminder(event){
         const callback = (event)=>{
-            console.log(event);
+            Events.addEvent(event);
+            this.setState({reminders:Events.getEvents()})
+            this.closePopOver();
         }
-        createCalendarEvent(event,callback);
+        try{
+            createCalendarEvent(event,callback);
+        }catch(err){
+
+        }
+        
     }
 
     removeReminder(){

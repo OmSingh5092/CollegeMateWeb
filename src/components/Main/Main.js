@@ -2,7 +2,7 @@ import React, { useDebugValue } from 'react'
 
 import {HashRouter,Switch, Route,withRouter} from 'react-router-dom'
 
-import {CircularProgress} from '@material-ui/core'
+import {CircularProgress,Box, Typography} from '@material-ui/core'
 
 
 //Componenst
@@ -18,7 +18,16 @@ import {UserData} from '../../closures/LocalData'
 const Progress = (props)=>{
 
     return(
-        <CircularProgress style={{width:100, height:100}}/>
+        <Box display="flex" flexGrow={1} justifyContent="center" flexDirection="column" alignContent="center" flexWrap="wrap">
+            <Typography style={{margin:50}}>
+                Loading Scripts ....
+            </Typography>
+             <CircularProgress style={{
+            width:100, 
+            height:100}}/>
+
+        </Box>
+       
     )
 }
 

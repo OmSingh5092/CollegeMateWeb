@@ -6,7 +6,7 @@ import {Grid, Typography, Button,Box,Popover, TextField,Dialog,DialogTitle, Swit
 import { UserData } from '../../closures/LocalData';
 
 //Closures
-import {Subjects} from '../../closures/GeneralData'
+import {Events} from '../../closures/GeneralData'
 
 //Icons
 import AddIcon from '../../res/images/ic_add.png'
@@ -15,7 +15,8 @@ import CloseIcon from '../../res/images/ic_close.png'
 //Apis
 import {createCalendarEvent} from '../../api/googleApiCtrl.js'
 
-//Google API
+//Timeformatting
+import {parseDate} from '../../utils/timeFormatting'
 
 
 const style=(theme)=>({
@@ -52,7 +53,7 @@ const ViewHolder = (props)=>{
     }
 
     const [dialog,setDialog] = React.useState(false);
-    
+    const {reminder} = props; 
     const {index} = props;
     const {deleteCallback} = props;
     return(
@@ -60,6 +61,20 @@ const ViewHolder = (props)=>{
             <Box display="flex" flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
                 <img src={CloseIcon} style={{height:20, width:20}}/>
             </Box>
+
+            <Typography style={style.title}>
+                {reminder.summary}
+            </Typography>
+            <Typography style={style.title}>
+                {reminder.description}
+            </Typography>
+            <Typography style={style.title}>
+                Start : {parseDate(reminder.start.dateTime)}
+            </Typography>
+            <Typography style={style.title}>
+                End : {parseDate(reminder.end.dateTime)}
+            </Typography>
+
             <Dialog
                 open={dialog}
                 onClose={()=>setDialog(false)}
@@ -174,7 +189,7 @@ class Reminder extends React.Component{
 
         this.state={
             popoveranchor:null,
-            reminders:[],
+            reminders:Events.getEvents(),
         }
 
         this.handlePopOver = this.handlePopOver.bind(this);
@@ -183,6 +198,7 @@ class Reminder extends React.Component{
     }
 
     componentDidMount(){
+        console.log(Events.getEvents());
     }
 
     addReminder(event){
@@ -190,6 +206,10 @@ class Reminder extends React.Component{
             console.log(event);
         }
         createCalendarEvent(event,callback);
+    }
+
+    removeReminder(){
+
     }
 
     handlePopOver(event){
@@ -228,7 +248,7 @@ class Reminder extends React.Component{
                 <Box display="flex" flexWrap="wrap">
                     {this.state.reminders.map((item,index)=>(
                         <Box display="flex">
-                            <ViewHolder />
+                            <ViewHolder reminder ={item} deleteCallback={this.removeReminder} />
                         </Box>   
                     ))}
                 </Box>

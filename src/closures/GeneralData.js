@@ -100,3 +100,22 @@ export const Classes = (function(){
     return({getClasses,removeClass,setClasses,addClasses,getAllClasses});
 
 })();
+
+export const Events = (()=>{
+    var data = [];
+
+    function setEvents(events){
+        data = events;
+    }
+
+    function getEvents(){
+        return data;
+    }
+
+    function addEvent(event){
+        data.push(event);
+    }
+
+    return ({setEvents,getEvents,addEvent});
+
+})();

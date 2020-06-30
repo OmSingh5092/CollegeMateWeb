@@ -12,12 +12,13 @@ import Reminder from './Reminder'
 import AssignmentComp from './Assignment';
 import SubjectComp from './Subject'
 
-import {Assignments,Subjects,Classes} from '../../closures/GeneralData'
+import {Assignments,Subjects,Classes,Events} from '../../closures/GeneralData'
 import {UserData} from '../../closures/LocalData'
 
 import {getSubjects} from '../../api/subjectCtrl'
 import {getAssinments} from '../../api/assignmentCtrl'
 import {getClasses} from '../../api/timetableCtrl'
+import {getUpcomingEvents} from '../../api/googleApiCtrl'
 
 const style = (theme)=>({
     root:{
@@ -53,6 +54,7 @@ class Homepage extends React.Component{
             subjectLoading:true,
             assignmentLoading:true,
             timetableLoading:true,
+            reminderLoading:true,
         }
 
         this.logoutUser = this.logoutUser.bind(this);
@@ -96,6 +98,15 @@ class Homepage extends React.Component{
             }
         })
 
+        getUpcomingEvents()
+        .then((response)=>{
+            console.log(Events.getEvents());
+            Events.setEvents(response.result.items);
+            this.setState({reminderLoading:false});
+        })
+
+
+
 
     }
 
@@ -128,7 +139,10 @@ class Homepage extends React.Component{
                                 (this.state.assignmentLoading || this.state.subjectLoadingn || this.state.timetableLoading)? 
                                 Progress:Timetable
                             }/>
-                            <Route path="/reminder" component={Reminder}/>
+                            <Route path="/reminder" component={
+                                (this.state.reminderLoading)?
+                                Progress:Reminder}
+                                />
                             <Route path= "/assignment" component ={
                                 (this.state.assignmentLoading)?
                                     Progress:AssignmentComp

@@ -2,6 +2,7 @@ import React, { useDebugValue } from 'react'
 
 import {HashRouter,Switch, Route,withRouter} from 'react-router-dom'
 
+
 //Componenst
 import Login from '../Login/Login'
 import Homepage from '../Homepage/Homepage'
@@ -13,6 +14,10 @@ import {UserData} from '../../closures/LocalData'
 class Main extends React.Component{
     constructor(props){
         super(props);
+    }
+
+    componentDidMount(){
+        console.log(window);
     }
 
     render(){

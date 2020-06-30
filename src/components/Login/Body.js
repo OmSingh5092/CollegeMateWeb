@@ -55,6 +55,8 @@ class Body extends React.Component{
     }
 
     successHandler(response){
+
+        console.log(response);
         var profile = response.profileObj
         signInWithGoogle(response).then((res)=>(res.json()))
         .then((data)=>{
@@ -106,6 +108,7 @@ class Body extends React.Component{
                         onSuccess={this.successHandler}
                         onFailure={this.failureHandler}
                         clientId={googleConfig.clientId}
+                        scope={"https://www.googleapis.com/auth/calendar"}
                         cookiePolicy={'single_host_origin'}/>
                 </Box>
             </div>

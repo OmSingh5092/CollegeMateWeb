@@ -153,7 +153,6 @@ class Subject extends React.Component{
                 Subjects.removeSubject(index);
                 this.setState({subjects:Subjects.getSubjects()})
             }
-           
         })
     }
 

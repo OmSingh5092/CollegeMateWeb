@@ -11,6 +11,7 @@ import Timetable from './Timetable'
 import Reminder from './Reminder'
 import AssignmentComp from './Assignment';
 import SubjectComp from './Subject'
+import LibraryComp from './Library'
 
 import {Assignments,Subjects,Classes,Events} from '../../closures/GeneralData'
 import {UserData} from '../../closures/LocalData'
@@ -55,6 +56,7 @@ class Homepage extends React.Component{
             assignmentLoading:true,
             timetableLoading:true,
             reminderLoading:true,
+            libraryLoading:false,
         }
 
         this.logoutUser = this.logoutUser.bind(this);
@@ -96,7 +98,7 @@ class Homepage extends React.Component{
             }else{
 
             }
-        })
+        },function(err) { console.error("Execute error", err);})
 
         getUpcomingEvents()
         .then((response)=>{
@@ -104,9 +106,6 @@ class Homepage extends React.Component{
             Events.setEvents(response.result.items);
             this.setState({reminderLoading:false});
         })
-
-
-
 
     }
 
@@ -151,6 +150,12 @@ class Homepage extends React.Component{
                                 (this.state.subjectLoading)? 
                                     Progress:SubjectComp
                             }/>
+
+                            <Route path="/library" component={
+                                (this.state.libraryLoading)?
+                                    Progress:LibraryComp
+                            }
+                            />
                         </Switch>
 
                     </Box>

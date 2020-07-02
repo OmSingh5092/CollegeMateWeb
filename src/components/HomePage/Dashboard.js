@@ -152,7 +152,7 @@ class Dashboard extends React.Component{
                     </Box>
                     <Box display="flex" flexDirection="row" flexWrap="wrap" flex={1} justifyContent="flex-end">
 
-                        <Box style={{margin:20}} className={classes.sideButtons} component={Button}>
+                        <Box style={{margin:20}} className={classes.sideButtons} component={Button} onClick={()=>{this.props.history.push('./library')}}>
                             <img src={BookIcon} style={{height:"100px", width:"100px"}}/>
                             <br/>
                             <Typography style={{marginLeft:30}}>

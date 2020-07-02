@@ -119,3 +119,22 @@ export const Events = (()=>{
     return ({setEvents,getEvents,addEvent});
 
 })();
+
+
+export const FilesList = (()=>{
+    var files= [];
+
+    function setFiles(data){
+        files = data;
+    }
+    
+    function addFile(file){
+        files.push(file);
+    }
+
+    function getFiles(){
+        return files;
+    }
+
+    return {setFiles, addFile,getFiles}
+})();

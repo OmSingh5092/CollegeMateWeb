@@ -27,3 +27,5 @@ export const Timetable={
     delete:BASE_URL+"timetable/delete"
 }
 
+//Google REST API end points
+

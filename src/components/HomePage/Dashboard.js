@@ -56,6 +56,12 @@ const AssignmentComp = (props)=>{
                 Assignments
             </Typography>
             <br/>
+
+            {data.length==0?
+            <Typography style={{color:"#b00202"}}>
+                No assignment has been added
+            </Typography>:
+
             <Box display="flex" flexDirection="row">
                 {data.map((data,index)=>(
                     <Box className={classes.box}>
@@ -69,9 +75,15 @@ const AssignmentComp = (props)=>{
                     </Box>
                 ))}
             </Box>
+        
+            }
+            
 
             <Box display="flex" flexGrow={1} justifyContent="flex-end" style={{marginTop:20}} component={Link} to={"/assignment"}>
-                    View More.
+                {data.length ==0?
+                    <div>Add Assignment</div>:
+                    <div>View More.</div>
+                }
             </Box>
             
             
@@ -89,6 +101,11 @@ const SubjectComp = (props)=>{
                 Subjects
             </Typography>
             <br/>
+            {data.length==0 ?
+            <Typography style={{color:"#b00202", }}>
+                No subject has been added
+            </Typography>
+            :
             <Box display="flex" flexDirection="row" flexWrap="wrap">
                 {data.map((data,index)=>(
                     <Box className={classes.box}>
@@ -103,9 +120,17 @@ const SubjectComp = (props)=>{
                     </Box>
                 ))}
             </Box>
+            
+            }
+            
             <Box display="flex" justifyContent="flex-end" component={Link} style={{marginLeft:"auto"}} to={"/subject"}>
-                    View More.
-                </Box>
+                    
+                    {data.length ==0?
+                        <div>Add Subject</div>:
+                        <div>View More.</div>
+                    }
+                    
+            </Box>
             
             
             
@@ -144,7 +169,7 @@ class Dashboard extends React.Component{
                 <Box display="flex" flexDirection="row"  flexWrap="wrap" flexGrow={1}>
                     <Box display="flex" flexDirection="column" flexGrow={1} style={{marginRight:30}}>
                         <Box>
-                            <AssignmentComp/>
+                            <AssignmentComp/> 
                         </Box>
                         <Box>
                             <SubjectComp/>

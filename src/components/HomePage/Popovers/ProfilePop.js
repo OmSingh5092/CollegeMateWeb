@@ -123,12 +123,12 @@ class ProfileComp extends React.Component{
         }
 
 
-        this.toggleEditMode = this.toggleEditMode.bind(this);
+        this.setEditMode = this.setEditMode.bind(this);
         this.editProfile = this.editProfile.bind(this);
     }
 
-    toggleEditMode(){
-        this.setState({editMode:!this.state.editMode});
+    setEditMode(){
+        this.setState({editMode:true});
     }
 
     editProfile(profile){
@@ -153,11 +153,15 @@ class ProfileComp extends React.Component{
                     <Typography className={classes.title}>
                         Profile
                     </Typography>
+                    {this.state.editMode?
+                    <div/>:
                     <Box display="flex" flexGrow={1} justifyContent="flex-end">
-                        <Button onClick={this.toggleEditMode}>
-                            <img style={{height:50, width:50}} src={EditIcon} />
+                        <Button onClick={this.setEditMode}>
+                            <img style={{height:30, width:30}} src={EditIcon} />
                         </Button>
                     </Box>
+                    }
+                    
                 </Box>
                 <Box display="flex" minWidth={500} justifyContent="center">
                     {this.state.editMode? 

@@ -139,10 +139,10 @@ const AddTimetable = (props)=>{
             </FormControl> <br/>
 
             <TextField variant="outlined" label="Venue" onChange={(event)=>{setVenue(event.target.value)}}/><br/>
-            <TextField variant="outlined" label="Start Time" type="time" 
+            <TextField variant="outlined" label="Start Time" type="time" inputProps={{max:endTime}}
                 onChange = {(event)=>{setStartTime(event.target.value)}}
             /> <br/>
-            <TextField variant="outlined" label="End Time" type="time"
+            <TextField variant="outlined" label="End Time" type="time" inputProps={{min:startTime}}
                 onChange = {(event)=>{setEndTime(event.target.value)}}
             /> <br/>
 
@@ -177,6 +177,18 @@ const AddTimetable = (props)=>{
                     Submit
                 </Typography>
             </Box>
+        </div>
+    )
+}
+
+
+const EmptyComp = (props)=>{
+    const {day} = props;
+    return(
+        <div style={{margin:30}}>
+            <Typography style={{color:"#b00202"}}>
+                No class has been added to {getLongDays()[day]}
+            </Typography>
         </div>
     )
 }
@@ -289,11 +301,15 @@ class Timetable extends React.Component{
                     </Box>
                 </Box>
                 <Box display="flex" flexWrap="wrap">
-                    {this.state.timetable.map((item,index)=>(
-                        <Box display="flex">
-                            <ViewHolder timetable={item} index={index} deleteCallback={this.deleteTimetable}/>
-                        </Box>   
-                    ))}
+                    {this.state.timetable.length ==0?
+                        <EmptyComp day={this.state.currentDay}/>:
+                        this.state.timetable.map((item,index)=>(
+                            <Box display="flex">
+                                <ViewHolder timetable={item} index={index} deleteCallback={this.deleteTimetable}/>
+                            </Box>   
+                        ))
+                    }
+                    
                 </Box>
 
             </div>

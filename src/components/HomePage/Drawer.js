@@ -4,11 +4,9 @@ import {Button, Drawer,ListItem, List,ListItemIcon,ListItemText, Dialog} from '@
 import {withRouter} from 'react-router-dom'
 
 import {withStyles} from '@material-ui/styles'
+
 //Image Icons
 import MenuIcon from '../../res/images/ic_menu.png'
-
-//Menu icons
-
 import ProfileIcon from '../../res/images/ic_profile.png'
 import PollsIcon from '../../res/images/ic_polls.png'
 import AboutUsIcon from '../../res/images/ic_about_us.png'
@@ -24,6 +22,7 @@ import {googleConfig} from '../../config'
 
 //PopOvers
 import ProfileComp from './Popovers/ProfilePop'
+import AboutUsComp from './Popovers/AboutUsPop'
 
 
 const menuList = [
@@ -35,7 +34,7 @@ const menuList = [
     {
         title: "About Us",
         icon: AboutUsIcon,
-        dialog:null
+        dialog:<AboutUsComp/>
     },
 ]
 

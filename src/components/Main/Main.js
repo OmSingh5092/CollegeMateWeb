@@ -18,13 +18,22 @@ import {UserData} from '../../closures/LocalData'
 const Progress = (props)=>{
 
     return(
-        <Box display="flex" flexGrow={1} justifyContent="center" flexDirection="column" alignContent="center" flexWrap="wrap">
-            <Typography style={{margin:50}}>
-                Loading Scripts ....
+        <Box display="flex" flexGrow={1} style={{height:'100vh'}} justifyContent="center" flexDirection="column" alignContent="center" flexWrap="wrap">
+            <Typography style={{fontSize:30}}>
+                Welcome to CollegeMate
             </Typography>
-             <CircularProgress style={{
-            width:100, 
-            height:100}}/>
+            <Typography style={{marginLeft:"auto", marginRight:"auto", marginTop:50 }}>
+                Loading Scripts.....
+            </Typography>
+            <Box display="flex" flexGrow={1} alignContent="center">
+
+                <CircularProgress style={{
+                    margin:"auto",
+                    width:100, 
+                    height:100}}/>
+
+            </Box>
+             
 
         </Box>
        

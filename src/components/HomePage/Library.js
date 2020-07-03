@@ -140,6 +140,16 @@ const AddFile = (props)=>{
     )
 }
 
+const EmptyComp = (props)=>{
+    return(
+        <div style={{margin:30}}>
+            <Typography style={{color:"#b00202"}}>
+                No file has been added to the library
+            </Typography>
+        </div>
+    )
+}
+
 
 class LibraryComp extends React.Component{
 
@@ -210,7 +220,9 @@ class LibraryComp extends React.Component{
                     </Box>
                 </Box>
                 <Box display="flex" flexWrap="wrap">
-                    {this.state.files.map((item,index)=>(
+                    {this.state.files.length==0?
+                    <EmptyComp/>:
+                    this.state.files.map((item,index)=>(
                         <Box display="flex">
                             <ViewHolder file={item} index={index} deleteCallback={this.deleteFile}/>
                         </Box>   

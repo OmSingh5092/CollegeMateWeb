@@ -3,6 +3,8 @@ import { Typography,Box,Button } from '@material-ui/core';
 
 import {withStyles} from '@material-ui/styles'
 
+import {Link} from 'react-router-dom'
+
 //Icons
 import GithubIcon from '../../../res/images/ic_github.png'
 
@@ -62,10 +64,10 @@ class AboutUs extends React.Component{
             </Box>
 
             <Box>
-                <Typography>
+                <Typography component={Link} onClick={()=>window.open("https://github.com/antailbaxt3r",'_blank')}>
                     Arjun Bajpayi
-                </Typography>
-                <Typography>
+                </Typography><br/>
+                <Typography component={Link} onClick={()=>window.open("https://github.com/OmSingh5092","_blank")}>
                     Om Singh
                 </Typography>
             </Box>

@@ -121,7 +121,7 @@ export const Events = (()=>{
 })();
 
 
-export const FilesList = (()=>{
+export const Library = (()=>{
     var files= [];
 
     function setFiles(data){
@@ -136,5 +136,23 @@ export const FilesList = (()=>{
         return files;
     }
 
-    return {setFiles, addFile,getFiles}
+    function removeFile(index){
+        files.splice(index,1);
+    }
+
+    return {setFiles, removeFile,addFile,getFiles}
+})();
+
+export const Profile =(()=>{
+    var data={};
+
+    function setData(newData){
+        data = newData;
+    }
+
+    function getData(){
+        return data;
+    }
+
+    return {setData,getData};
 })();

@@ -13,13 +13,17 @@ import AssignmentComp from './Assignment';
 import SubjectComp from './Subject'
 import LibraryComp from './Library'
 
-import {Assignments,Subjects,Classes,Events} from '../../closures/GeneralData'
+//Closures
+import {Assignments,Subjects,Classes,Events,Library,Profile} from '../../closures/GeneralData'
 import {UserData} from '../../closures/LocalData'
 
+//API Ctrl
 import {getSubjects} from '../../api/subjectCtrl'
 import {getAssinments} from '../../api/assignmentCtrl'
 import {getClasses} from '../../api/timetableCtrl'
 import {getUpcomingEvents} from '../../api/googleApiCtrl'
+import {getLibrary} from '../../api/libraryCtrl'
+import {getProfile} from '../../api/profileCtrl'
 
 const style = (theme)=>({
     root:{
@@ -56,7 +60,7 @@ class Homepage extends React.Component{
             assignmentLoading:true,
             timetableLoading:true,
             reminderLoading:true,
-            libraryLoading:false,
+            libraryLoading:true,
         }
 
         this.logoutUser = this.logoutUser.bind(this);
@@ -106,6 +110,26 @@ class Homepage extends React.Component{
             Events.setEvents(response.result.items);
             this.setState({reminderLoading:false});
         })
+
+        getLibrary().then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                Library.setFiles(res.files);
+                this.setState({libraryLoading:false})
+            }
+        })
+
+        getProfile().then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                Profile.setData(res.profile[0]);
+                console.log(Profile.getData());
+            }
+        })
+
+        
+
+
 
     }
 

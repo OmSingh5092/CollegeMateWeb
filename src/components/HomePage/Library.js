@@ -6,16 +6,18 @@ import {Grid, Typography, Button,Box,Popover,Input,TextField,FormControl,InputLa
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 //Api
+import {addLibrary,deleteLibrary} from '../../api/libraryCtrl'
 
 //Icons
 import AddIcon from '../../res/images/ic_add.png'
 import CloseIcon from '../../res/images/ic_close.png'
+import NewWindowIcon from '../../res/images/ic_new_window.png'
 
 //DateFormatter
 import {parseDate} from '../../utils/timeFormatting'
 
 //Cloures
-import {Assignments,Subjects} from '../../closures/GeneralData'
+import {Library} from '../../closures/GeneralData'
 
 const style = (theme)=>({
     root:{
@@ -52,26 +54,43 @@ const ViewHolder = (props)=>{
 
     const [dialog,setDialog] = React.useState(false);
     
+    const {file} = props;
     const {index} = props;
     const {deleteCallback} = props;
     return(
-        <div style={style.root}>
-            <Box display="flex" flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
-                <img src={CloseIcon} style={{height:20, width:20}}/>
+        <Box style={style.root} >
+            <Box display="flex" flexGrow={1}>
+                <Box  component={Button} justifyContent="flex-start" onClick={()=>window.open(file.path, '_blank')}>
+                    <img src={NewWindowIcon} style={{height:20, width:20}}/>
+                    
+                </Box>
+                <Box  flexGrow={1} component={Button} justifyContent="flex-end" onClick={()=>setDialog(true)}>
+                    <img src={CloseIcon} style={{height:20, width:20}}/>
+                    
+                </Box>
             </Box>
+            
+
+            <Typography style={style.title}>
+                {file.name}
+            </Typography>
+            <Typography style={style.text}>
+                {file.description}
+            </Typography>
+
             <Dialog
                 open={dialog}
                 onClose={()=>setDialog(false)}
             >
                 <DialogTitle >Are you sure to delete this subject?</DialogTitle>
-                <Button onClick={()=>{setDialog(false); deleteCallback()}} color="primary">
+                <Button onClick={()=>{setDialog(false); deleteCallback(file,index)}} color="primary">
                     Agree
                 </Button>
                 <Button onClick={()=>setDialog(false)} color="primary" autoFocus>
                     Disagree
                 </Button>
             </Dialog>
-        </div>
+        </Box>
     )
 }
 
@@ -95,6 +114,8 @@ const AddFile = (props)=>{
 
     //States
     const [file,setFile] = React.useState(null);
+    const [name,setName] = React.useState('');
+    const [description,setDescription] = React.useState('');
 
 
     return(
@@ -102,12 +123,15 @@ const AddFile = (props)=>{
             <Typography style={{padding:10}}>
                 Add File
             </Typography>
-
+            <TextField variant="outlined" label="Name" onChange={(event)=>{setName(event.target.value)}}/><br/>
+            <TextField variant="outlined" label="Description" onChange={(event)=>{setDescription(event.target.value)}}/><br/>
             <Input type="file" onChange={(event)=>{setFile(event.target.files[0]); console.log(event.target.files[0])}}></Input>
             
             <br/>
             
-            <Box style={style.submitButton} component={Button} onClick={()=>{callback(file)}}>
+            <Box style={style.submitButton} component={Button} onClick={()=>{callback(file,{
+                name,description
+            })}}>
                 <Typography>
                     Submit
                 </Typography>
@@ -124,7 +148,7 @@ class LibraryComp extends React.Component{
 
         this.state={
             popoveranchor:null,
-            assignments:Assignments.getAssignments(),
+            files:Library.getFiles(),
         }
 
         this.handlePopOver= this.handlePopOver.bind(this);
@@ -133,12 +157,23 @@ class LibraryComp extends React.Component{
         this.deleteFile = this.deleteFile.bind(this);
     }
 
-    addFile(file){
+    addFile(file,fileData){
+        addLibrary(file,fileData).then((res)=>(res.json()))
+        .then((res)=>{
+            Library.addFile(res);
+            this.setState({files:Library.getFiles()});            
+        })
 
     }
 
-    deleteFile(){
-
+    deleteFile(item,index){
+        deleteLibrary(item.file_id, item.public_id).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                Library.removeFile(index);
+                this.setState({files:Library.getFiles()});
+            }
+        })
     }
 
     handlePopOver(event){
@@ -175,9 +210,9 @@ class LibraryComp extends React.Component{
                     </Box>
                 </Box>
                 <Box display="flex" flexWrap="wrap">
-                    {this.state.assignments.map((item,index)=>(
+                    {this.state.files.map((item,index)=>(
                         <Box display="flex">
-                            <ViewHolder />
+                            <ViewHolder file={item} index={index} deleteCallback={this.deleteFile}/>
                         </Box>   
                     ))}
                 </Box>

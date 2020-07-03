@@ -2,7 +2,7 @@ import React from 'react'
 
 import {withStyles,useTheme} from '@material-ui/styles'
 
-import {Grid, Typography, Button,Box,Popover,Input,TextField,FormControl,InputLabel,Select,MenuItem,DialogTitle,Dialog} from '@material-ui/core'
+import {Grid, Typography, Button,Box,Popover,Input,TextField,FormControl,InputLabel,Select,MenuItem,DialogTitle,Dialog, LinearProgress} from '@material-ui/core'
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 //Api
@@ -113,6 +113,7 @@ const AddFile = (props)=>{
     const {callback}= props;
 
     //States
+    const [fileLoading,setFileLoading] = React.useState(false);
     const [file,setFile] = React.useState(null);
     const [name,setName] = React.useState('');
     const [description,setDescription] = React.useState('');
@@ -129,13 +130,17 @@ const AddFile = (props)=>{
             
             <br/>
             
-            <Box style={style.submitButton} component={Button} onClick={()=>{callback(file,{
+            <Box style={style.submitButton} component={Button} onClick={()=>{
+                setFileLoading(true);
+                callback(file,{
                 name,description
             })}}>
                 <Typography>
                     Submit
                 </Typography>
             </Box>
+
+            {fileLoading?<LinearProgress style={{marginTop:10}}/>:<div/>}
         </div>
     )
 }
@@ -171,7 +176,8 @@ class LibraryComp extends React.Component{
         addLibrary(file,fileData).then((res)=>(res.json()))
         .then((res)=>{
             Library.addFile(res);
-            this.setState({files:Library.getFiles()});            
+            this.setState({files:Library.getFiles()});  
+            this.closePopOver();    
         })
 
     }

@@ -180,6 +180,9 @@ export const Attendance = (()=>{
     }
 
     function addData(attendance){
+        if(data[attendance.subject_id] == null){
+            data[attendance.subject_id] = [];
+        }
         data[attendance.subject_id].push(attendance);
     }
 

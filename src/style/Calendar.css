@@ -1,0 +1,9 @@
+.presentDayHighlight{
+    color:black;
+    background-color: greenyellow;
+}
+
+.absentDayHighlight{
+    color:black;
+    background-color: red;
+}

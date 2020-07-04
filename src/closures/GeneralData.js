@@ -156,3 +156,32 @@ export const Profile =(()=>{
 
     return {setData,getData};
 })();
+
+export const Attendance = (()=>{
+    var data = {};
+
+    function setData(newData){
+        newData.map((item,index)=>{
+            if(data[item.subject_id] == null){
+                data[item.subject_id] = [item];
+            }else{
+                data[item.subject_id].push(item);
+            }
+            
+        })
+    }
+    
+    function getData(){
+        return data;
+    }
+
+    function getDataFromSubject(subjectId){
+        return data[subjectId];
+    }
+
+    function addData(attendance){
+        data[attendance.subject_id].push(attendance);
+    }
+
+    return {setData,getData,getDataFromSubject, addData};
+})();

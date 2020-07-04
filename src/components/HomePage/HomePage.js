@@ -12,9 +12,10 @@ import Reminder from './Reminder'
 import AssignmentComp from './Assignment';
 import SubjectComp from './Subject'
 import LibraryComp from './Library'
+import AttendanceComp from './Attendance'
 
 //Closures
-import {Assignments,Subjects,Classes,Events,Library,Profile} from '../../closures/GeneralData'
+import {Assignments,Subjects,Classes,Events,Library,Profile,Attendance} from '../../closures/GeneralData'
 import {UserData} from '../../closures/LocalData'
 
 //API Ctrl
@@ -24,6 +25,7 @@ import {getClasses} from '../../api/timetableCtrl'
 import {getUpcomingEvents} from '../../api/googleApiCtrl'
 import {getLibrary} from '../../api/libraryCtrl'
 import {getProfile} from '../../api/profileCtrl'
+import {getAttendance} from '../../api/attendanceCtrl' 
 
 const style = (theme)=>({
     root:{
@@ -61,6 +63,7 @@ class Homepage extends React.Component{
             timetableLoading:true,
             reminderLoading:true,
             libraryLoading:true,
+            attendanceLoading:true,
         }
 
         this.logoutUser = this.logoutUser.bind(this);
@@ -127,6 +130,20 @@ class Homepage extends React.Component{
             }
         })
 
+        getAttendance().then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                console.log("Attendance Data",res.attendance);
+                Attendance.setData(res.attendance);
+                this.setState({attendanceLoading:false});
+                
+            }else{
+                console.log("Attendance Error",res.msg);
+            }
+        }).catch((err)=>{
+            console.log("Attendance Error",err);
+        })
+
         
 
 
@@ -178,6 +195,11 @@ class Homepage extends React.Component{
                             <Route path="/library" component={
                                 (this.state.libraryLoading)?
                                     Progress:LibraryComp
+                            }
+                            />
+                            <Route path="/attendance" component={
+                                (this.state.attendanceLoading)?
+                                    Progress:AttendanceComp
                             }
                             />
                         </Switch>

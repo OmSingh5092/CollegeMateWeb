@@ -1,5 +1,5 @@
-const BASE_URL = "https://collegemate-api.herokuapp.com/api/" ;
-//"http://localhost:4193/api/"
+const BASE_URL = //"https://collegemate-api.herokuapp.com/api/" ;
+"http://localhost:4193/api/"
 export const login = {
     post:BASE_URL+"google/signin",
 }
@@ -33,5 +33,10 @@ export const Library = {
     get:BASE_URL+"library/get",
     delete:BASE_URL+ "library/delete"
 }
-//Google REST API end points
+
+export const Attendance={
+    post:BASE_URL+"attendance/add",
+    get:BASE_URL+"attendance/get",
+    delete:BASE_URL+"attendance/delete"
+}
 
